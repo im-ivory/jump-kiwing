@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jump Kiwing</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game" aria-label="Jump Kiwing game"></canvas>
+      <div class="hud">
+        <div class="badge">JUMP KIWING</div>
+        <div class="score">
+          <span class="score-label">SCORE</span>
+          <span id="score">0</span>
+        </div>
+      </div>
+      <div class="overlay" id="overlay">
+        <div class="panel">
+          <div class="overline" id="overlay-overline">준비됐어?</div>
+          <h1 id="overlay-title">JUMP!</h1>
+          <p class="subtitle" id="overlay-subtitle">
+            화면을 터치하거나 스페이스를 눌러 점프하세요!
+          </p>
+          <p class="scoreline" id="overlay-score"></p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

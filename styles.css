@@ -1,0 +1,189 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+:root {
+  color-scheme: light;
+  --ink: #16151a;
+  --ink-soft: rgba(20, 22, 28, 0.75);
+  --paper: #f7f1e8;
+  --accent: #5fae4b;
+  --accent-soft: #bfe79c;
+  --sky-top: #cdebb9;
+  --sky-mid: #e6f4c6;
+  --sky-base: #eaf6e1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+  background: radial-gradient(circle at 20% 20%, #ffffff 0, #f6f9e5 35%, #e3f5d8 85%),
+    linear-gradient(120deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-base) 100%);
+  color: var(--ink);
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hud {
+  position: absolute;
+  inset: calc(24px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) auto
+    calc(24px + env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.badge {
+  font-family: "Barlow Condensed", "Impact", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 22px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 12px 30px rgba(18, 18, 18, 0.15);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-size: 20px;
+  padding: 8px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 12px 30px rgba(18, 18, 18, 0.15);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+}
+
+.score-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(24px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right))
+    calc(24px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left));
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(227, 248, 214, 0.6) 45%,
+    rgba(216, 244, 210, 0.75) 100%
+  );
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.panel {
+  max-width: 420px;
+  width: 100%;
+  padding: 28px 32px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  box-shadow: 0 30px 60px rgba(17, 17, 17, 0.18);
+  text-align: center;
+}
+
+.overline {
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.panel h1 {
+  font-family: "Barlow Condensed", "Impact", sans-serif;
+  font-size: clamp(42px, 7vw, 64px);
+  margin: 0 0 12px;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.scoreline {
+  margin: 16px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@media (max-width: 720px), (pointer: coarse) {
+  .hud {
+    inset: calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) auto
+      calc(16px + env(safe-area-inset-left));
+    gap: 10px;
+  }
+
+  .badge {
+    font-size: 20px;
+    padding: 10px 14px;
+  }
+
+  .score {
+    font-size: 22px;
+    padding: 10px 16px;
+  }
+
+  .score-label {
+    font-size: 11px;
+  }
+
+  .overlay {
+    align-items: flex-end;
+    padding: 18px 16px calc(26px + env(safe-area-inset-bottom)) 16px;
+  }
+
+  .panel {
+    padding: 22px 20px;
+    border-radius: 22px;
+  }
+
+  .panel h1 {
+    font-size: clamp(38px, 12vw, 54px);
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+}
