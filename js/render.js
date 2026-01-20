@@ -170,9 +170,9 @@ function drawBackground() {
   drawCloud(world.width * 0.72, world.height * 0.26, 40);
 
   // 언덕 3겹: 멀리(느리게) -> 가까이(빠르게)
-  drawHills(world.groundY - 140, "#d7efb1", 0.15, 90);
-  drawHills(world.groundY - 90, "#b6e28a", 0.3, 70);
-  drawHills(world.groundY - 30, "#8fce61", 0.5, 50);
+  drawHills(world.groundY - 140, "#BDF4AB", 0.15, 90);
+  drawHills(world.groundY - 90, "#A2E98A", 0.3, 70);
+  drawHills(world.groundY - 30, "#83D966", 0.5, 50);
 }
 
 // ==============================
