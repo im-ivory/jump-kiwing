@@ -148,6 +148,23 @@ function drawHills(baseY, color, speedFactor, height) {
 }
 
 // ==============================
+// 4-1) 작은 구름 그리기
+// ==============================
+function drawCloud(x, y, size) {
+  const w = size;
+  const h = size * 0.6;
+
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  // 둥근 상단 3개 원 + 아래 둥근 베이스
+  ctx.ellipse(x - w * 0.18, y + h * 0.05, w * 0.28, h * 0.28, 0, 0, Math.PI * 2);
+  ctx.ellipse(x + w * 0.02, y - h * 0.18, w * 0.32, h * 0.34, 0, 0, Math.PI * 2);
+  ctx.ellipse(x + w * 0.28, y + h * 0.04, w * 0.26, h * 0.26, 0, 0, Math.PI * 2);
+  ctx.ellipse(x + w * 0.05, y + h * 0.2, w * 0.46, h * 0.22, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// ==============================
 // 4) 배경 그리기(하늘 + 언덕)
 // ==============================
 // 하늘은 세로 그라데이션으로 깔고,
@@ -162,6 +179,10 @@ function drawBackground() {
   // 캔버스 전체를 배경색으로 채움
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, world.width, world.height);
+
+  // 작은 구름 2개
+  drawCloud(world.width * 0.28, world.height * 0.18, 60);
+  drawCloud(world.width * 0.72, world.height * 0.26, 40);
 
   // 언덕 3겹: 멀리(느리게) -> 가까이(빠르게)
   drawHills(world.groundY - 140, "#d7efb1", 0.15, 90);
