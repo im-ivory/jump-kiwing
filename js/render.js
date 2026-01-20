@@ -9,7 +9,7 @@
 // 3) 장애물
 // 4) 플레이어(스프라이트 or 대체 도형)
 
-import { ctx, state, world } from "./state.js";
+import { ctx, state, tuning, world } from "./state.js";
 
 // ==============================
 // 1) 플레이어 스프라이트 로드
@@ -41,6 +41,41 @@ let obstacleSpriteReady = false;
 obstacleSprite.onload = () => {
   obstacleSpriteReady = true;
 };
+
+// ==============================
+// 1-2) 색상 보간(하늘 색 자연스럽게 변화)
+// ==============================
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+function hexToRgb(hex) {
+  const clean = hex.replace("#", "");
+  const value = clean.length === 3
+    ? clean.split("").map((c) => c + c).join("")
+    : clean;
+  const num = parseInt(value, 16);
+  return {
+    r: (num >> 16) & 255,
+    g: (num >> 8) & 255,
+    b: num & 255,
+  };
+}
+
+function rgbToHex({ r, g, b }) {
+  const toHex = (v) => v.toString(16).padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function lerpHexColor(fromHex, toHex, t) {
+  const a = hexToRgb(fromHex);
+  const b = hexToRgb(toHex);
+  return rgbToHex({
+    r: Math.round(lerp(a.r, b.r, t)),
+    g: Math.round(lerp(a.g, b.g, t)),
+    b: Math.round(lerp(a.b, b.b, t)),
+  });
+}
 
 // ==============================
 // 2) 도형 유틸: 둥근 사각형 경로 만들기
@@ -155,11 +190,27 @@ function drawCloud(x, y, size) {
 // 하늘은 세로 그라데이션으로 깔고,
 // 언덕을 3겹으로 깔아서 깊이감을 만듦(패럴랙스)
 function drawBackground() {
+  const speed = state.speed;
+  const baseSpeed = tuning.baseSpeed;
+  const midSpeed = baseSpeed + 140;
+  const highSpeed = baseSpeed + 360;
+
+  let skyColor = "#E0F9FF";
+  if (speed >= highSpeed) {
+    skyColor = "#354B71";
+  } else if (speed >= midSpeed) {
+    const t = (speed - midSpeed) / (highSpeed - midSpeed);
+    skyColor = lerpHexColor("#FFE9C6", "#354B71", t);
+  } else {
+    const t = (speed - baseSpeed) / (midSpeed - baseSpeed);
+    skyColor = lerpHexColor("#E0F9FF", "#FFE9C6", Math.max(0, Math.min(1, t)));
+  }
+
   // 하늘 배경 그라데이션 생성
   const gradient = ctx.createLinearGradient(0, 0, 0, world.height);
-  gradient.addColorStop(0, "#E0F9FF");
-  gradient.addColorStop(0.55, "#E0F9FF");
-  gradient.addColorStop(1, "#E0F9FF");
+  gradient.addColorStop(0, skyColor);
+  gradient.addColorStop(0.55, skyColor);
+  gradient.addColorStop(1, skyColor);
 
   // 캔버스 전체를 배경색으로 채움
   ctx.fillStyle = gradient;

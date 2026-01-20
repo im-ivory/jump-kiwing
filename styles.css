@@ -150,8 +150,8 @@ canvas {
 
 .panel h1 {
   /* font-family: "Barlow Condensed", "Impact", sans-serif; */
-  font-size: 28px;
-  margin: 60px 0 8px 0;
+  font-size: 42px;
+  margin: 0 0 8px 0;
   letter-spacing: 0.18em;
   color: #ffffff;
   display: inline-block;
@@ -165,8 +165,9 @@ canvas {
   background-color: #d1f623;
   border: 1px solid #000;
   border-radius: 20px;
-  padding: 16px 34px;
+  padding: 16px 36px;
   box-shadow: inset -4px -4px 4px rgba(0, 0, 0, 0.15);
+  filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.15));
 }
 
 .subtitle {
@@ -317,12 +318,12 @@ canvas {
 
 .start-btn {
   margin-top: 24px;
-  padding: 12px 28px;
+  padding: 12px 24px;
   border-radius: 16px;
   border: 2px solid #111;
   background: #fff;
   font-family: "DungGeunMo", monospace;
-  font-size: 20px;
+  font-size: 32px;
   color: #d1f623;
   cursor: pointer;
   pointer-events: auto; /* 안전 */
@@ -332,6 +333,8 @@ canvas {
     1px -1px 0 #111,
     -1px 1px 0 #111,
     1px 1px 0 #111;
+  box-shadow: inset -4px -4px 4px rgba(0, 0, 0, 0.15);
+  filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.15));
 }
 
 .exit-text {
@@ -393,7 +396,8 @@ canvas {
   }
 
   .panel h1 {
-    font-size: 30px;
+    font-size: 40px;
+    letter-spacing: -0.01em;
   }
 
   .subtitle {
