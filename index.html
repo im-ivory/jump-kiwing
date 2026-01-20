@@ -19,11 +19,39 @@
       <div class="overlay" id="overlay">
         <div class="panel">
           <div class="overline" id="overlay-overline">준비됐어?</div>
-          <h1 id="overlay-title">JUMP!</h1>
+          <h1 id="overlay-title">JUMP KIWING</h1>
           <p class="subtitle" id="overlay-subtitle">
-            화면을 터치하거나 스페이스를 눌러 점프하세요!
+            화면을 터치하여 점프하세요!
           </p>
+          <img
+            class="overlay-illustration"
+            id="overlay-illustration"
+            src="assets/flying_kiwing.png"
+            alt="Kiwing"
+          />
+          <div class="gameover-panel is-hidden" id="overlay-gameover">
+            <div class="gameover-card stats-card">
+              <div class="card-title">GAME OVER</div>
+              <div class="card-divider"></div>
+              <div class="stats-grid">
+                <div class="stat-label">SCORE</div>
+                <div class="stat-value" id="overlay-score-value">00000</div>
+                <div class="stat-label">HI</div>
+                <div class="stat-value" id="overlay-best-value">00000</div>
+                <div class="stat-label">RANK</div>
+                <div class="stat-value" id="overlay-rank-value">---</div>
+              </div>
+            </div>
+            <div class="gameover-card ranking-card">
+              <div class="card-title">RANKING</div>
+              <div class="card-divider"></div>
+              <ol class="ranking-list" id="overlay-ranking-list"></ol>
+            </div>
+          </div>
           <p class="scoreline" id="overlay-score"></p>
+          <button class="start-btn" id="start-btn" type="button">
+            GAME START
+          </button>
         </div>
       </div>
     </div>

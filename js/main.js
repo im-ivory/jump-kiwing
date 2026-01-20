@@ -4,7 +4,7 @@
 // - 메인 루프(tick)를 requestAnimationFrame으로 계속 돌려서
 //   매 프레임 update(상태 갱신) -> draw(그리기) 순서로 게임이 움직이게 함.
 
-import { resize, resetGame, loadBestScore } from "./state.js"; // 화면/게임 상태 관련 초기화 함수들
+import { resize, resetGame, loadBestScore, startGame } from "./state.js"; // 화면/게임 상태 관련 초기화 함수들
 import { bindInput } from "./input.js"; // 키/터치 입력 이벤트 등록
 import { update } from "./update.js"; // 물리/스폰/충돌/점수 업데이트
 import { draw } from "./render.js"; // 배경/땅/장애물/플레이어 렌더링

@@ -25,6 +25,9 @@ export const ui = {
   title: document.getElementById("overlay-title"),
   subtitle: document.getElementById("overlay-subtitle"),
   scoreline: document.getElementById("overlay-score"),
+  illustration: document.getElementById("overlay-illustration"),
+  ranking: document.getElementById("overlay-ranking"),
+  rankingList: document.getElementById("overlay-ranking-list"),
 };
 
 // ==============================
@@ -123,6 +126,32 @@ export function setOverlayContent({ overline, title, subtitle, scoreline }) {
   ui.title.textContent = title;
   ui.subtitle.textContent = subtitle;
   ui.scoreline.textContent = scoreline || "";
+}
+
+function setOverlayMedia({ showIllustration }) {
+  if (showIllustration) {
+    ui.illustration.classList.remove("is-hidden");
+    ui.ranking.classList.add("is-hidden");
+    return;
+  }
+
+  ui.illustration.classList.add("is-hidden");
+  ui.ranking.classList.remove("is-hidden");
+}
+
+function renderRanking({ currentScore, bestScore }) {
+  ui.rankingList.textContent = "";
+
+  const entries = [
+    { rank: 1, label: "최고", value: bestScore },
+    { rank: 2, label: "이번", value: currentScore },
+  ];
+
+  for (const entry of entries) {
+    const item = document.createElement("li");
+    item.textContent = `${entry.rank}위 ${entry.label} ${entry.value}`;
+    ui.rankingList.appendChild(item);
+  }
 }
 
 // 오버레이 숨김(게임 시작 시)
@@ -262,11 +291,12 @@ export function resetGame() {
 
   // 시작 오버레이 문구 세팅 후 표시
   setOverlayContent({
-    overline: "준비됐어?",
-    title: "JUMP!",
-    subtitle: "화면을 터치하거나 스페이스를 눌러 점프하세요!",
+    overline: "",
+    title: "JUMP KIWING",
+    subtitle: "화면을 터치하여 점프하세요!",
     scoreline: "",
   });
+  setOverlayMedia({ showIllustration: true });
   showOverlay();
 }
 
@@ -299,11 +329,16 @@ export function endGame() {
 
   // 게임오버 오버레이 문구 세팅 후 표시
   setOverlayContent({
-    overline: "앗!",
+    overline: "",
     title: "GAME OVER",
-    subtitle: "화면을 터치하거나 스페이스를 눌러 다시 시작하세요.",
+    subtitle: "화면을 터치하여 점프하세요!",
     scoreline: `점수 ${Math.floor(state.score)}  |  최고 ${Math.floor(state.bestScore)}`,
   });
+  renderRanking({
+    currentScore: Math.floor(state.score),
+    bestScore: Math.floor(state.bestScore),
+  });
+  setOverlayMedia({ showIllustration: false });
   showOverlay();
 }
 

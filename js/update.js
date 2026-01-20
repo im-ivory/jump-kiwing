@@ -162,6 +162,7 @@ function checkCollision() {
 // main.js의 tick()에서 매 프레임 호출됨.
 // dt는 "지난 프레임부터 흐른 시간(초)".
 export function update(dt) {
+  if (!state.running) return;
   // 누적 시간 증가(난이도 증가/애니메이션 등에 사용)
   state.time += dt;
 
