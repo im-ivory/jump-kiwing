@@ -192,18 +192,31 @@ function drawCloud(x, y, size) {
 function drawBackground() {
   const speed = state.speed;
   const baseSpeed = tuning.baseSpeed;
-  const midSpeed = baseSpeed + 140;
-  const highSpeed = baseSpeed + 360;
+  const skyA = "#E0F9FF";
+  const skyB = "#FFE9C6";
+  const skyC = "#354B71";
+  const hold1 = 120;
+  const transition1 = 45;
+  const hold2 = 130;
+  const transition2 = 45;
+  const phase1End = baseSpeed + hold1;
+  const phase2End = phase1End + transition1;
+  const phase3End = phase2End + hold2;
+  const phase4End = phase3End + transition2;
 
-  let skyColor = "#E0F9FF";
-  if (speed >= highSpeed) {
-    skyColor = "#354B71";
-  } else if (speed >= midSpeed) {
-    const t = (speed - midSpeed) / (highSpeed - midSpeed);
-    skyColor = lerpHexColor("#FFE9C6", "#354B71", t);
+  let skyColor = skyA;
+  if (speed <= phase1End) {
+    skyColor = skyA;
+  } else if (speed <= phase2End) {
+    const t = (speed - phase1End) / transition1;
+    skyColor = lerpHexColor(skyA, skyB, t);
+  } else if (speed <= phase3End) {
+    skyColor = skyB;
+  } else if (speed <= phase4End) {
+    const t = (speed - phase3End) / transition2;
+    skyColor = lerpHexColor(skyB, skyC, t);
   } else {
-    const t = (speed - baseSpeed) / (midSpeed - baseSpeed);
-    skyColor = lerpHexColor("#E0F9FF", "#FFE9C6", Math.max(0, Math.min(1, t)));
+    skyColor = skyC;
   }
 
   // 하늘 배경 그라데이션 생성
