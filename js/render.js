@@ -33,6 +33,16 @@ playerSprite.onload = () => {
 };
 
 // ==============================
+// 1-1) 장애물 스프라이트 로드
+// ==============================
+const obstacleSprite = new Image();
+obstacleSprite.src = "assets/tree.png";
+let obstacleSpriteReady = false;
+obstacleSprite.onload = () => {
+  obstacleSpriteReady = true;
+};
+
+// ==============================
 // 2) 도형 유틸: 둥근 사각형 경로 만들기
 // ==============================
 // drawRoundedRect는 "그리지는 않고" 경로(path)만 만들어.
@@ -60,55 +70,30 @@ function drawRoundedRect(x, y, width, height, radius) {
 // 2-1) 선인장 장애물 그리기
 // ==============================
 function drawCactus(x, y, width, height, fillColor) {
-  const trunkWidth = width * 0.55;
-  const trunkX = x + (width - trunkWidth) / 2;
-  const trunkY = y;
-  const armWidth = trunkWidth * 0.5;
-  const armHeight = height * 0.45;
-  const armY = y + height * 0.2;
+  if (obstacleSpriteReady) {
+    const aspect = obstacleSprite.width / obstacleSprite.height;
+    const scale = 2;
+    let drawWidth = width;
+    let drawHeight = width / aspect;
+
+    if (drawHeight > height) {
+      drawHeight = height;
+      drawWidth = height * aspect;
+    }
+
+    drawWidth *= scale;
+    drawHeight *= scale;
+
+    const dx = x + width / 2 - drawWidth / 2;
+    const dy = y + height - drawHeight;
+    ctx.drawImage(obstacleSprite, dx, dy, drawWidth, drawHeight);
+    return;
+  }
 
   ctx.save();
   ctx.fillStyle = fillColor;
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.7)";
-  ctx.lineWidth = Math.max(2, width * 0.08);
-  ctx.lineJoin = "round";
-
-  // 왼쪽 팔
-  drawRoundedRect(
-    trunkX - armWidth * 0.6,
-    armY,
-    armWidth,
-    armHeight,
-    armWidth * 0.5,
-  );
+  drawRoundedRect(x, y, width, height, Math.min(10, width * 0.2));
   ctx.fill();
-  ctx.stroke();
-
-  // 오른쪽 팔
-  drawRoundedRect(
-    trunkX + trunkWidth - armWidth * 0.4,
-    armY * 0.96,
-    armWidth,
-    armHeight * 0.95,
-    armWidth * 0.5,
-  );
-  ctx.fill();
-  ctx.stroke();
-
-  // 몸통
-  drawRoundedRect(trunkX, trunkY, trunkWidth, height, trunkWidth * 0.35);
-  ctx.fill();
-  ctx.stroke();
-
-  // 하이라이트
-  ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-  ctx.fillRect(
-    trunkX + trunkWidth * 0.18,
-    trunkY + height * 0.12,
-    trunkWidth * 0.18,
-    height * 0.68,
-  );
-
   ctx.restore();
 }
 
