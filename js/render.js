@@ -57,6 +57,62 @@ function drawRoundedRect(x, y, width, height, radius) {
 }
 
 // ==============================
+// 2-1) 선인장 장애물 그리기
+// ==============================
+function drawCactus(x, y, width, height, fillColor) {
+  const trunkWidth = width * 0.55;
+  const trunkX = x + (width - trunkWidth) / 2;
+  const trunkY = y;
+  const armWidth = trunkWidth * 0.5;
+  const armHeight = height * 0.45;
+  const armY = y + height * 0.2;
+
+  ctx.save();
+  ctx.fillStyle = fillColor;
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.7)";
+  ctx.lineWidth = Math.max(2, width * 0.08);
+  ctx.lineJoin = "round";
+
+  // 왼쪽 팔
+  drawRoundedRect(
+    trunkX - armWidth * 0.6,
+    armY,
+    armWidth,
+    armHeight,
+    armWidth * 0.5,
+  );
+  ctx.fill();
+  ctx.stroke();
+
+  // 오른쪽 팔
+  drawRoundedRect(
+    trunkX + trunkWidth - armWidth * 0.4,
+    armY * 0.96,
+    armWidth,
+    armHeight * 0.95,
+    armWidth * 0.5,
+  );
+  ctx.fill();
+  ctx.stroke();
+
+  // 몸통
+  drawRoundedRect(trunkX, trunkY, trunkWidth, height, trunkWidth * 0.35);
+  ctx.fill();
+  ctx.stroke();
+
+  // 하이라이트
+  ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+  ctx.fillRect(
+    trunkX + trunkWidth * 0.18,
+    trunkY + height * 0.12,
+    trunkWidth * 0.18,
+    height * 0.68,
+  );
+
+  ctx.restore();
+}
+
+// ==============================
 // 3) 언덕 레이어(패럴랙스) 그리기
 // ==============================
 // baseY: 언덕이 놓일 기준 y
@@ -99,9 +155,9 @@ function drawHills(baseY, color, speedFactor, height) {
 function drawBackground() {
   // 하늘 배경 그라데이션 생성
   const gradient = ctx.createLinearGradient(0, 0, 0, world.height);
-  gradient.addColorStop(0, "#cce8b4");
-  gradient.addColorStop(0.55, "#e6f3c7");
-  gradient.addColorStop(1, "#eaf6e1");
+  gradient.addColorStop(0, "#E0F9FF");
+  gradient.addColorStop(0.55, "#E0F9FF");
+  gradient.addColorStop(1, "#E0F9FF");
 
   // 캔버스 전체를 배경색으로 채움
   ctx.fillStyle = gradient;
@@ -119,11 +175,11 @@ function drawBackground() {
 // 지면 색 + 상단 라인 + 움직이는 줄무늬로 "달리는 느낌"을 만듦
 function drawGround() {
   // 땅 본체(groundY 아래를 전부 채움)
-  ctx.fillStyle = "#1b2217";
+  ctx.fillStyle = "#F0FFAD";
   ctx.fillRect(0, world.groundY, world.width, world.height - world.groundY);
 
-  // 땅 상단 라인(밝은 색)
-  ctx.fillStyle = "#bfe79c";
+  // 땅 상단 라인(땅과 동일하게 맞춰 하늘 띠 제거)
+  ctx.fillStyle = "#F0FFAD";
   ctx.fillRect(0, world.groundY - 6, world.width, 6);
 
   // 바닥 줄무늬(패럴랙스처럼 흐르게)
@@ -131,7 +187,7 @@ function drawGround() {
   const stripeWidth = 18; // 줄무늬 너비
   const stripeOffset = state.scroll * 0.5; // scroll에 비례해서 줄무늬가 이동
 
-  ctx.fillStyle = "rgba(255, 255, 255, 0.16)";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.26)";
   for (let x = -stripeGap; x < world.width + stripeGap; x += stripeGap) {
     // offset에 따라 줄무늬가 계속 흐르도록 mod 연산
     const drawX = (x - stripeOffset) % (stripeGap * 2);
@@ -145,14 +201,13 @@ function drawGround() {
 // update.js에서 만든 state.obstacles 배열을 순회하면서 사각형 장애물을 그림
 function drawObstacles() {
   for (const obstacle of state.obstacles) {
-    // 장애물 본체
-    ctx.fillStyle = obstacle.color;
-    drawRoundedRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height, 8);
-    ctx.fill();
-
-    // 하이라이트(살짝 밝은 줄)로 입체감 추가
-    ctx.fillStyle = "rgba(255, 255, 255, 0.28)";
-    ctx.fillRect(obstacle.x + 6, obstacle.y + 6, obstacle.width * 0.4, 6);
+    drawCactus(
+      obstacle.x,
+      obstacle.y,
+      obstacle.width,
+      obstacle.height,
+      obstacle.color,
+    );
   }
 }
 

@@ -53,8 +53,8 @@ function spawnObstacle() {
   // 장애물 y: 지면 위에 딱 붙도록(장애물의 바닥 = groundY)
   const y = world.groundY - height;
 
-  // 색상을 약간 랜덤하게(비슷한 톤 안에서만 흔들림)
-  const hue = rand(24, 32);
+  // 색상을 약간 랜덤하게(선인장 톤)
+  const hue = rand(112, 126);
 
   // 장애물 데이터 객체를 state.obstacles 배열에 추가
   // render.js는 이 배열을 읽어 장애물을 그림
@@ -63,7 +63,7 @@ function spawnObstacle() {
     y,
     width,
     height,
-    color: `hsl(${hue}deg 72% 54%)`,
+    color: `hsl(${hue}deg 48% 38%)`,
   });
 
   // 속도가 빨라질수록 스폰 간격도 "체감상" 빨라지게 보정

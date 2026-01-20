@@ -26,8 +26,12 @@ export const ui = {
   subtitle: document.getElementById("overlay-subtitle"),
   scoreline: document.getElementById("overlay-score"),
   illustration: document.getElementById("overlay-illustration"),
-  ranking: document.getElementById("overlay-ranking"),
+  gameover: document.getElementById("overlay-gameover"),
   rankingList: document.getElementById("overlay-ranking-list"),
+  scoreValue: document.getElementById("overlay-score-value"),
+  bestValue: document.getElementById("overlay-best-value"),
+  rankValue: document.getElementById("overlay-rank-value"),
+  startButton: document.getElementById("start-btn"),
 };
 
 // ==============================
@@ -128,30 +132,43 @@ export function setOverlayContent({ overline, title, subtitle, scoreline }) {
   ui.scoreline.textContent = scoreline || "";
 }
 
-function setOverlayMedia({ showIllustration }) {
-  if (showIllustration) {
-    ui.illustration.classList.remove("is-hidden");
-    ui.ranking.classList.add("is-hidden");
-    return;
-  }
+function setOverlayMode(mode) {
+  const isGameOver = mode === "gameover";
+  ui.overlay.classList.toggle("is-gameover", isGameOver);
 
-  ui.illustration.classList.add("is-hidden");
-  ui.ranking.classList.remove("is-hidden");
+  ui.illustration.classList.toggle("is-hidden", isGameOver);
+  ui.gameover.classList.toggle("is-hidden", !isGameOver);
+
+  if (ui.startButton) {
+    ui.startButton.textContent = isGameOver ? "RESTART" : "GAME START";
+  }
 }
 
 function renderRanking({ currentScore, bestScore }) {
   ui.rankingList.textContent = "";
 
-  const entries = [
-    { rank: 1, label: "최고", value: bestScore },
-    { rank: 2, label: "이번", value: currentScore },
+  const base = Math.max(bestScore, currentScore);
+  const values = [
+    base,
+    Math.max(base - 75, 0),
+    Math.max(base - 180, 0),
+    Math.max(base - 250, 0),
+    Math.max(base - 320, 0),
   ];
 
-  for (const entry of entries) {
+  values.forEach((value, index) => {
     const item = document.createElement("li");
-    item.textContent = `${entry.rank}위 ${entry.label} ${entry.value}`;
+    const label = document.createElement("span");
+    const score = document.createElement("span");
+    const rank = `${index + 1}${["ST", "ND", "RD"][index] || "TH"}`;
+
+    label.textContent = rank;
+    score.textContent = String(value).padStart(5, "0");
+
+    item.appendChild(label);
+    item.appendChild(score);
     ui.rankingList.appendChild(item);
-  }
+  });
 }
 
 // 오버레이 숨김(게임 시작 시)
@@ -296,7 +313,7 @@ export function resetGame() {
     subtitle: "화면을 터치하여 점프하세요!",
     scoreline: "",
   });
-  setOverlayMedia({ showIllustration: true });
+  setOverlayMode("start");
   showOverlay();
 }
 
@@ -331,14 +348,17 @@ export function endGame() {
   setOverlayContent({
     overline: "",
     title: "GAME OVER",
-    subtitle: "화면을 터치하여 점프하세요!",
-    scoreline: `점수 ${Math.floor(state.score)}  |  최고 ${Math.floor(state.bestScore)}`,
+    subtitle: "",
+    scoreline: "",
   });
+  ui.scoreValue.textContent = String(Math.floor(state.score)).padStart(5, "0");
+  ui.bestValue.textContent = String(Math.floor(state.bestScore)).padStart(5, "0");
+  ui.rankValue.textContent = "136TH";
   renderRanking({
     currentScore: Math.floor(state.score),
     bestScore: Math.floor(state.bestScore),
   });
-  setOverlayMedia({ showIllustration: false });
+  setOverlayMode("gameover");
   showOverlay();
 }
 
