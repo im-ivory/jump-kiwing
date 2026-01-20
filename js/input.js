@@ -31,15 +31,9 @@ export function consumeJumpQueued() {
 // - 게임 상태에 따라 시작/리셋 처리
 // - 그리고 jumpQueued를 true로 설정
 function requestJump() {
-  // 아직 게임이 시작되지 않은 상태면 → 게임 시작
-  if (!state.running && !state.gameOver) {
-    startGame();
-  }
-  // 게임오버 상태면 → 리셋 후 다시 시작
-  else if (state.gameOver) {
-    resetGame();
-    startGame();
-  }
+  // 게임 시작/리셋은 버튼에서만 처리하고,
+  // 플레이 중일 때만 점프 입력을 받음
+  if (!state.running) return;
 
   // 실제 점프는 update 단계에서 처리하도록 "요청"만 저장
   jumpQueued = true;

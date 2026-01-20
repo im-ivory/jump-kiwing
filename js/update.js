@@ -24,22 +24,24 @@ import { consumeJumpQueued } from "./input.js"; // 입력 모듈에 저장된 "�
 function spawnObstacle() {
   // 장애물 크기 전체 스케일(모바일이면 약간 작게 등)
   const scale = tuning.obstacleScale;
+  const widthFactor = rand(0.85, 1.3);
+  const heightFactor = rand(0.9, 1.45);
 
   // 장애물 너비: 화면 너비 기반 범위를 랜덤으로 뽑고 clamp로 최소/최대 제한
   const width = Math.round(
     clamp(
-      rand(world.width * 0.04, world.width * 0.07) * scale, // 화면 비율 기반 랜덤
+      rand(world.width * 0.04, world.width * 0.085) * scale * widthFactor, // 화면 비율 기반 랜덤
       30 * scale, // 너무 작지 않게
-      60 * scale, // 너무 크지 않게
+      78 * scale, // 너무 크지 않게
     ),
   );
 
   // 장애물 높이: 화면 높이 기반 범위를 랜덤으로 뽑고 clamp로 제한
   const height = Math.round(
     clamp(
-      rand(world.height * 0.06, world.height * 0.12) * scale,
-      40 * scale,
-      92 * scale,
+      rand(world.height * 0.06, world.height * 0.155) * scale * heightFactor,
+      44 * scale,
+      125 * scale,
     ),
   );
 
