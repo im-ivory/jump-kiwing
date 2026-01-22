@@ -19,10 +19,11 @@ const ui = {
 const baseConfig = {
   baseSpeed: 350,
   speedRamp: 11,
+  maxSpeed: 600,
   gravity: 2600,
   jumpVelocity: 980,
-  spawnMin: 0.95,
-  spawnMax: 1.7,
+  spawnMin: 1.1,
+  spawnMax: 1.95,
 };
 
 const tuning = {
@@ -101,10 +102,11 @@ function applyTuning() {
     Object.assign(tuning, {
       baseSpeed: 310,
       speedRamp: 8.8,
+      maxSpeed: 540,
       gravity: 2300,
       jumpVelocity: 940,
-      spawnMin: 0.9,
-      spawnMax: 1.6,
+      spawnMin: 1.05,
+      spawnMax: 1.85,
       playerScale: 2,
       obstacleScale: 0.95,
       groundRatio: 0.8,
@@ -216,7 +218,7 @@ function spawnObstacle() {
     height,
     color: `hsl(${hue}deg 72% 54%)`,
   });
-  const speedFactor = clamp(420 / state.speed, 0.6, 1.2);
+  const speedFactor = clamp(420 / state.speed, 0.9, 1.2);
   state.nextSpawn = rand(tuning.spawnMin, tuning.spawnMax) * speedFactor;
 }
 
@@ -267,7 +269,10 @@ function checkCollision() {
 
 function update(dt) {
   state.time += dt;
-  const targetSpeed = tuning.baseSpeed + state.time * tuning.speedRamp;
+  const targetSpeed = Math.min(
+    tuning.baseSpeed + state.time * tuning.speedRamp,
+    tuning.maxSpeed
+  );
   state.speed = state.running ? targetSpeed : tuning.baseSpeed;
   const travel = (state.running ? state.speed : tuning.baseSpeed * 0.35) * dt;
   state.scroll += travel;

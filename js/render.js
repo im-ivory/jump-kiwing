@@ -195,10 +195,10 @@ function drawBackground() {
   const skyA = "#E0F9FF";
   const skyB = "#FFE9C6";
   const skyC = "#354B71";
-  const hold1 = 120;
-  const transition1 = 45;
-  const hold2 = 130;
-  const transition2 = 45;
+  const hold1 = 70;
+  const transition1 = 35;
+  const hold2 = 70;
+  const transition2 = 35;
   const phase1End = baseSpeed + hold1;
   const phase2End = phase1End + transition1;
   const phase3End = phase2End + hold2;
